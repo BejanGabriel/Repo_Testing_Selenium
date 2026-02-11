@@ -6,18 +6,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.io.FileHandler;
 
-import javax.swing.*;
 import java.io.File;
-import java.nio.file.Files;
 import java.time.Duration;
 
 public class TestSelenium {
-    private static WebDriver driver =new ChromeDriver();
+/*    private static WebDriver driver =new ChromeDriver();
 
     public static WebElement clickButton(String xpath){
         WebElement button = driver.findElement(By.xpath(xpath));
         button.click();
-    }
+    }*/
 
 
 
@@ -26,7 +24,7 @@ public class TestSelenium {
 
 
     public static void main(String[] args) throws Exception {
-        WebDriver driver = new ChromeDriver();
+
 
 
 //        da cercare chromeoptions -> dovete fare in modo che il test parta a schermo intero
@@ -40,7 +38,7 @@ public class TestSelenium {
 
     // Dichiarazione del driver (motere di ricerca) da utilizzare, in questo caso chrome.
 
-
+        WebDriver driver = new ChromeDriver();
 
     // Indirizzazione del motere di ricerca verso un URL
         driver.get("https://www.lastampa.it/");
@@ -85,7 +83,7 @@ public class TestSelenium {
 
                 // Ricerca elemento 'CERCA' Dentro la pagina per poter poi inserire Testo.
         System.out.println("DEBUG: Ricerca bottone cerca");
-        WebElement cercaButton = driver.findElement(By.xpath("//*[@id=\"home\"]/div[6]/div[2]/div/div[1]/button[2]"));
+        WebElement cercaButton = driver.findElement(By.xpath("(//button/span[text() = 'Cerca']/ancestor::button)[2]"));
 
         System.out.println("Premi ricerca");
         cercaButton.click();
@@ -93,7 +91,7 @@ public class TestSelenium {
         System.out.println("Ricerca Campo Input");
         WebElement testoRicerca = driver.findElement(By.xpath("//form[1]//div[1]//input[@type='search']"));
 
-        testoRicerca.click();
+        //testoRicerca.click();
 
         System.out.println("Inserimento in testo 'Input' ");
         testoRicerca.sendKeys("milano");
@@ -111,12 +109,12 @@ public class TestSelenium {
         new Actions(driver)
                 .scrollToElement(footer)
                 .perform();
-/*
-NON SERVER PER ORA
-        WebElement message = driver.findElement(By.id("message"));
-        message.getText();
-*/
 
         driver.quit();
     }
 }
+
+
+
+
+
