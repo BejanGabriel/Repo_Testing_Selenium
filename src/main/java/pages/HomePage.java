@@ -22,11 +22,18 @@ public class HomePage extends Page{
     @FindBy(xpath = "(//button/span[text() = 'Cerca']/ancestor::button)[2]")
     private WebElement cercaButton;
 
-    @FindBy(xpath = "//form[@method='get']//button[@type='submit']")
+    @FindBy(xpath = "//form[1]//div[1]//input[@type='search']")
     private WebElement inputField;
 
     @FindBy(xpath = "//form[@method='get']//button[@type='submit']")
     private WebElement submitResearcButton;
+
+    @FindBy(tagName = "footer")
+    private WebElement botoom;
+
+    public WebElement getBotoom() {
+        return botoom;
+    }
 
     public WebElement getButtonCloseAds() {
         return buttonCloseAds;
