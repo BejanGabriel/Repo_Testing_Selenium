@@ -9,7 +9,6 @@ Feature: HomePage
     Then I research for "<elementoRicerca>"
     Then I quit page
 
-
     Examples:
       | urlHomepage | elementoRicerca |
       | https://www.lastampa.it/ | Milano |
