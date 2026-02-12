@@ -10,22 +10,8 @@ import java.io.File;
 import java.time.Duration;
 
 public class TestSelenium {
-/*    private static WebDriver driver =new ChromeDriver();
-
-    public static WebElement clickButton(String xpath){
-        WebElement button = driver.findElement(By.xpath(xpath));
-        button.click();
-    }*/
-
-
-
-
-
-
 
     public static void main(String[] args) throws Exception {
-
-
 
 //        da cercare chromeoptions -> dovete fare in modo che il test parta a schermo intero
 //
@@ -65,17 +51,7 @@ public class TestSelenium {
         acceptBtn.click();
 
         // Prova Screenshot solo se pubblicità
-   /*     try {
-         WebElement bannerPubblicitario = driver.findElement(By.xpath("//div[@id='layer']"));
-            if(bannerPubblicitario.isDisplayed()){
-                File scrFile = bannerPubblicitario.getScreenshotAs(OutputType.FILE);
-                FileHandler.copy(scrFile, new File("C:\\Users\\Gabriel Bejan\\Desktop\\Esercizi\\Task_1\\screenshoot\\screnshoot.png"));
-            }
-        } catch (RuntimeException e) {
-            *//*throw new RuntimeException(e);*//*
-        }finally {
-            System.out.println("Ok");
-        }*/
+
         WebElement pagina = driver.findElement(By.tagName("html"));
         File scrFile = pagina.getScreenshotAs(OutputType.FILE);
         FileHandler.copy(scrFile, new File("C:\\Users\\Gabriel Bejan\\Desktop\\Esercizi\\Task_1\\screenshoot\\screnshoot.png"));

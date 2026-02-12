@@ -4,6 +4,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -11,56 +12,108 @@ import org.openqa.selenium.io.FileHandler;
 import pages.HomePage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Scanner;
 
-public class HomePageStepDefinition{
+public class HomePageStepDefinition {
 
     private HomePage homePage;
     private WebDriver driver;
 
     @Before
-    public void start(){
+    public void start() {
         driver = new ChromeDriver();
         homePage = new HomePage(driver);
     }
 
-    @Given("Land on homepage \"{}\"")
-    public void landOnHomepage(String urlHomepage){
-        homePage.openPage(urlHomepage);
+    @Given("Land on homepage")
+    public void landOnHomepage() {
+
+        // File.separator = inserisce il separatore usato dal sistema. ES: Win -> '\\'    Mac -> '//'
+
+        String link = leggiFile().toString();
+
+        homePage.openPage(link);
 
     }
-   @Then("I remove cookies screen")
-    public void removeCookies() {
-       homePage.getAcceptCookieButton().click();
-   }
+    public StringBuilder leggiFile(){
 
-   @And("I remove ads and take screenshot")
-   public void removeAds(){
-        if(!homePage.getLogoBanner().isDisplayed()){
+        /*String sitoFilePath = System.getProperty("user.dir") + File.separator+"src" + File.separator + "test" + File.separator + "resources" + File.separator + "sito.txt";*/
+
+        String sitoFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\sito.txt";
+        System.out.println(sitoFilePath);
+        File sitoFile = new File(sitoFilePath);
+        StringBuilder dato = new StringBuilder();
+
+        System.out.println("Sono dentro LeggiFile");
+
+        try(Scanner scan = new Scanner(sitoFile)){
+            while(scan.hasNext()){
+                dato.append(scan.nextLine());
+
+            }
+            return dato;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @When("I remove cookies screen")
+    public void removeCookies() {
+        homePage.getAcceptCookieButton().click();
+        WebElement pagina = driver.findElement(By.tagName("html"));
+        File scrFile = pagina.getScreenshotAs(OutputType.FILE);
+        try {
+
+            // modificare in modo da renderlo dinamico -> devo poter salvare la pic anche nel mio pc se facio il clone -> cambiare il path
+            String projectPath = System.getProperty("user.dir");
+            FileHandler.copy(scrFile, new File(projectPath + "\\screenshoot\\screnshoot.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Then("Hide all ads")
+    public void hideAllAds() {
+
+    }
+
+
+    @And("I remove ads and take screenshot")
+    public void removeAds() {
+        if (!homePage.getLogoBanner().isDisplayed()) {
             WebElement pagina = driver.findElement(By.tagName("html"));
             File scrFile = pagina.getScreenshotAs(OutputType.FILE);
             try {
-                FileHandler.copy(scrFile, new File("C:\\Users\\Gabriel Bejan\\Desktop\\Esercizi\\Task_1\\screenshoot\\screnshoot.png"));
+
+            // modificare in modo da renderlo dinamico -> devo poter salvare la pic anche nel mio pc se facio il clone -> cambiare il path
+                String projectPath = System.getProperty("user.dir");
+                FileHandler.copy(scrFile, new File(projectPath + "\\screenshoot\\screnshoot.png"));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             homePage.getButtonCloseAds().click();
-        }else{
-            System.out.println("No ADS was found!");
+        } else {
+            System.out.println("No ADS were found!");
         }
-   }
-
-    @Then("I research for \"{}\"")
-    public void researchNew(String context){
-    homePage.getCercaButton().click();
-    homePage.getInputField().click();
-    homePage.getInputField().sendKeys(context);
-    homePage.getSubmitResearcButton().click();
     }
 
+    @Then("I research for \"{}\"")
+    public void researchNew(String context) {
+        homePage.getCercaButton().click();
+        // Non serve cliccarci evvidentemente
+        // homePage.getInputField().click();
+        homePage.getInputField().sendKeys(context);
+        homePage.getInputField().sendKeys(Keys.ENTER);
+        // Non serve più siccome uso ENTER sul FORM
+        //homePage.getSubmitResearcButton().click();
+
+    }
 
     @And("I scroll to bottom")
-    public void scrollToBottom(){
+    public void scrollToBottom() {
         new Actions(driver)
                 .sendKeys(Keys.END)
                 .perform();
@@ -76,10 +129,7 @@ public class HomePageStepDefinition{
     }
 
     @Then("I quit page")
-    public void quitPage(){
+    public void quitPage() {
         driver.quit();
     }
-
-
-
 }

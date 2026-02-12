@@ -10,6 +10,13 @@ public class HomePage extends Page{
     public HomePage(WebDriver driver) {
         super(driver);
     }
+
+    //ELEMENTI ADS
+/*    @FindBy(xpath = "//*[contains(@id , 'adv]/a/img")
+    private WebElement imgAds;*/
+// xpath per btn dinamic: //button[contains(text(), 'Services') or contains(@id, 'Services')]
+// dove 'Service' verrà sostituito da qualsiasi input
+
     @FindBy(xpath = "//h1[contains(@class, 'logo')]/a[@title = 'La Stampa']")
     private WebElement logoBanner;
 
@@ -29,10 +36,10 @@ public class HomePage extends Page{
     private WebElement submitResearcButton;
 
     @FindBy(tagName = "footer")
-    private WebElement botoom;
+    private WebElement bottom;
 
-    public WebElement getBotoom() {
-        return botoom;
+    public WebElement getBottom() {
+        return bottom;
     }
 
     public WebElement getButtonCloseAds() {
