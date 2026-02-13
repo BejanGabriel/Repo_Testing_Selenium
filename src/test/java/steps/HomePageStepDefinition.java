@@ -25,6 +25,7 @@ public class HomePageStepDefinition {
     public void start() {
         driver = new ChromeDriver();
         homePage = new HomePage(driver);
+
     }
 
     @Given("Land on homepage")
