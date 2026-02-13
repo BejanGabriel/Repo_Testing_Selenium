@@ -3,8 +3,7 @@ Feature: HomePage
 
   Scenario Outline: Homepage check
     Given Land on homepage
-    When I remove cookies screen
-    Then Hide all ads
+    When I click on Accetta button
     And I scroll to bottom
     And I remove ads and take screenshot
     Then I research for "<elementoRicerca>"
@@ -23,6 +22,10 @@ Feature: HomePage
   Examples:
     | elementoRicerca |
     | Milano |
+  |        |
+  |        |
+  |        |
+  |        |
 
 
 # @Prov

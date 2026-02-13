@@ -1,8 +1,14 @@
 package pages;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.io.FileHandler;
 import org.openqa.selenium.support.FindBy;
+
+import java.io.File;
+import java.io.IOException;
 
 public class HomePage extends Page{
 
@@ -66,5 +72,40 @@ public class HomePage extends Page{
         return submitResearcButton;
     }
 
+    public void clickOnButton(String textButton){
+        String xpath = "//button[contains(text(), '" + textButton + "') or contains(@id, '" + textButton + "') or contains(@class, '" + textButton + "')]";
+        WebElement button = driver.findElement(By.xpath(xpath));
+        button.click();
+    }
 
+    @Override
+    public void clickBackArrow() {
+        driver.navigate().back();
+    }
+
+    @Override
+    public void refreshPage() {
+        driver.navigate().refresh();
+    }
+
+    @Override
+    public void clickForwardArrow() {
+        driver.navigate().forward();
+    }
+
+    @Override
+    public void takeScreenshoot() {
+        WebElement pagina = driver.findElement(By.tagName("html"));
+        File scrFile = pagina.getScreenshotAs(OutputType.FILE);
+        try {
+
+            // modificare in modo da renderlo dinamico -> devo poter salvare la pic anche nel mio pc se facio il clone -> cambiare il path
+            String projectPath = System.getProperty("user.dir");
+            FileHandler.copy(scrFile, new File(projectPath + "\\screenshoot\\screnshoot.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
 }

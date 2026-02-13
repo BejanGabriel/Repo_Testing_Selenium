@@ -5,7 +5,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.time.Duration;
 
-public abstract class Page {
+public abstract class Page implements PageInterface{
     protected WebDriver driver;
 
     public Page(WebDriver driver) {

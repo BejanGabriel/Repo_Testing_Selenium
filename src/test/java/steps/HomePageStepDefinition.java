@@ -8,13 +8,13 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.io.FileHandler;
 import pages.HomePage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HomePageStepDefinition {
 
@@ -33,8 +33,21 @@ public class HomePageStepDefinition {
         // File.separator = inserisce il separatore usato dal sistema. ES: Win -> '\\'    Mac -> '//'
 
         String link = leggiFile().toString();
+        System.out.println("Il link restituito dal metodo è: " + link);
+        String regex = "^(ht|f)tp(s?)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}(:[0-9]+)?(/.*)?$";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(link);
+        boolean matchFound = matcher.find();
+        System.out.println(matchFound);
+        if(matchFound){
+            System.out.println("Il link è valido!");
+            homePage.openPage(link);
+        }else{
+        System.out.println("Il Link del file 'sito.txt' non è valido, controlla!");
+        // chiudi la scheda chrome se il link non è valido
+        driver.quit();
+        }
 
-        homePage.openPage(link);
 
     }
     public StringBuilder leggiFile(){
@@ -51,28 +64,19 @@ public class HomePageStepDefinition {
         try(Scanner scan = new Scanner(sitoFile)){
             while(scan.hasNext()){
                 dato.append(scan.nextLine());
-
             }
             return dato;
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Non è stato trovato il file indicato!!");
         }
 
     }
 
-    @When("I remove cookies screen")
-    public void removeCookies() {
-        homePage.getAcceptCookieButton().click();
-        WebElement pagina = driver.findElement(By.tagName("html"));
-        File scrFile = pagina.getScreenshotAs(OutputType.FILE);
-        try {
+    @When("I click on {} button")
+    public void removeCookies(String textButton) {
+        homePage.clickOnButton(textButton);
+        homePage.takeScreenshoot();
 
-            // modificare in modo da renderlo dinamico -> devo poter salvare la pic anche nel mio pc se facio il clone -> cambiare il path
-            String projectPath = System.getProperty("user.dir");
-            FileHandler.copy(scrFile, new File(projectPath + "\\screenshoot\\screnshoot.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Then("Hide all ads")
@@ -84,16 +88,7 @@ public class HomePageStepDefinition {
     @And("I remove ads and take screenshot")
     public void removeAds() {
         if (!homePage.getLogoBanner().isDisplayed()) {
-            WebElement pagina = driver.findElement(By.tagName("html"));
-            File scrFile = pagina.getScreenshotAs(OutputType.FILE);
-            try {
-
-            // modificare in modo da renderlo dinamico -> devo poter salvare la pic anche nel mio pc se facio il clone -> cambiare il path
-                String projectPath = System.getProperty("user.dir");
-                FileHandler.copy(scrFile, new File(projectPath + "\\screenshoot\\screnshoot.png"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            homePage.takeScreenshoot();
             homePage.getButtonCloseAds().click();
         } else {
             System.out.println("No ADS were found!");
