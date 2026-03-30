@@ -1,10 +1,13 @@
 package steps;
 
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.plugin.event.Node;
+import log.CustomLogger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -23,8 +26,10 @@ public class HomePageStepDefinition {
 
     @Before
     public void start() {
+
         driver = new ChromeDriver();
         homePage = new HomePage(driver);
+        String filePath= "C:\\Users\\Gabriel Bejan\\Desktop\\Esercizi\\Task_1\\target\\customLog\\logger.txt";
 
     }
 
@@ -77,7 +82,15 @@ public class HomePageStepDefinition {
     public void removeCookies(String textButton) {
         homePage.clickOnButton(textButton);
         homePage.takeScreenshoot();
+    }
 
+    @And("I wait {} seconds")
+    public void iWait(int seconds){
+        try {
+            Thread.sleep(seconds* 1000L);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Then("Hide all ads")
@@ -86,14 +99,19 @@ public class HomePageStepDefinition {
     }
 
 
-    @And("I remove ads and take screenshot")
+    @And("I remove full screen ads and take screenshot")
     public void removeAds() {
         if (!homePage.getLogoBanner().isDisplayed()) {
             homePage.takeScreenshoot();
-            homePage.getButtonCloseAds().click();
+            homePage.getBigAdsCloseButton().click();
         } else {
-            System.out.println("No ADS were found!");
+            System.out.println("No Full screen ADS were found!");
         }
+    }
+
+    @And("I remove bottom ads")
+    public void removeBottomAds(){
+        homePage.getAdsCloseButton().click();
     }
 
     @Then("I research for \"{}\"")

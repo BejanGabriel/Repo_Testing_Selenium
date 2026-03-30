@@ -10,7 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import java.io.File;
 import java.io.IOException;
 
-public class HomePage extends Page{
+public class HomePage extends Page {
 
     //passo il driver direttamente al padre, Page
     public HomePage(WebDriver driver) {
@@ -27,7 +27,7 @@ public class HomePage extends Page{
     private WebElement logoBanner;
 
     @FindBy(xpath = "//img[@id = 'closeButton']")
-    private WebElement buttonCloseAds;
+    private WebElement bigAdsCloseButton;
 
     @FindBy(xpath = "//button[text() = 'Accetta']")
     private WebElement acceptCookieButton;
@@ -41,6 +41,9 @@ public class HomePage extends Page{
     @FindBy(xpath = "//form[@method='get']//button[@type='submit']")
     private WebElement submitResearcButton;
 
+    @FindBy(xpath = "//div[contains(@id, 'adv')]//button[contains(@class, 'close')]")
+    private WebElement adsCloseButton;
+
     @FindBy(tagName = "footer")
     private WebElement bottom;
 
@@ -48,8 +51,10 @@ public class HomePage extends Page{
         return bottom;
     }
 
-    public WebElement getButtonCloseAds() {
-        return buttonCloseAds;
+    public WebElement getBigAdsCloseButton() { return bigAdsCloseButton; }
+
+    public WebElement getAdsCloseButton() {
+        return adsCloseButton;
     }
 
     public WebElement getAcceptCookieButton() {
@@ -72,7 +77,7 @@ public class HomePage extends Page{
         return submitResearcButton;
     }
 
-    public void clickOnButton(String textButton){
+    public void clickOnButton(String textButton) {
         String xpath = "//button[contains(text(), '" + textButton + "') or contains(@id, '" + textButton + "') or contains(@class, '" + textButton + "')]";
         WebElement button = driver.findElement(By.xpath(xpath));
         button.click();

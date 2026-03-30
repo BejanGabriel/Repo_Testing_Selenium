@@ -4,10 +4,13 @@ Feature: HomePage
   Scenario Outline: Homepage check
     Given Land on homepage
     When I click on Accetta button
+    And I wait 2 seconds
+    And I remove bottom ads
+    And I wait 2 seconds
     And I scroll to bottom
-    And I remove ads and take screenshot
+    And I remove full screen ads and take screenshot
     Then I research for "<elementoRicerca>"
-  #  Then I quit page
+    #Then I quit page
 
     #Creare un interfaccia che contenga i metodi che verrano usati da page.
     # alcuni metodi devono essere implementati altri no
@@ -21,11 +24,8 @@ Feature: HomePage
 
   Examples:
     | elementoRicerca |
-    | Milano |
-  |        |
-  |        |
-  |        |
-  |        |
+    | Torino |
+
 
 
 # @Prov

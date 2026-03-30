@@ -9,7 +9,7 @@ import steps.HomePageStepDefinition;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = {"steps"},
-        plugin = {"pretty"}
+        plugin = {"pretty","log.CustomLogger"}
 )
 public class TestRunner {
 
